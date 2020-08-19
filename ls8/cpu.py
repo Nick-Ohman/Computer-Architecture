@@ -26,7 +26,7 @@ class CPU:
                     self.ram[address] = int(line, 2)
                     address += 1
 
-                print(line)
+                # print(line)
                         
 
        
@@ -102,6 +102,8 @@ class CPU:
         LDI = 0b10000010
         PRN = 0b01000111
         MUL = 0b10100010
+        PUSH = 0b01000101
+        POP= 0b01000110
 
 
         
@@ -131,6 +133,30 @@ class CPU:
                 value = self.ram[self.pc + 2]
                 self.reg[reg_num] *= self.reg[value]
                 self.pc += 3
+
+            elif ir == PUSH:
+                # Decrement SP
+                self.reg[7] -= 1
+                 # Get value from register
+                reg_num = self.ram[self.pc +1]
+                value = self.reg[reg_num]
+
+                #store it on the stack
+                top_stack = self.reg[7]
+                self.ram[top_stack] = value
+                self.pc +=2
+
+            elif ir == POP:
+                reg_num = self.ram[self.pc +1]
+                self.reg[reg_num] = self.ram[self.reg[7]]
+
+                self.reg[7] += 1
+
+                self.pc += 2
+            else:
+                print(f"Invalid instruction {ir} at address {pc}")
+                sys.exit(1)
+
                
 
 
