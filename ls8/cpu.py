@@ -11,27 +11,48 @@ class CPU:
         self.reg = [0] * 8
         self.pc = 0
 
-
+ 
     def load(self):
         """Load a program into memory."""
-
         address = 0
+        with open(sys.argv[1]) as f:
+            for line in f:
+                line = line.split("#")[0].strip()
 
-        # For now, we've just hardcoded a program:
+                if line == "":
+                    continue
 
-        program = [
-            # From print8.ls8
-            0b10000010, # LDI R0,8
-            0b00000000,
-            0b00001000,
-            0b01000111, # PRN R0
-            0b00000000,
-            0b00000001, # HLT
-        ]
+                else:
+                    self.ram[address] = int(line, 2)
+                    address += 1
 
-        for instruction in program:
-            self.ram[address] = instruction
-            address += 1
+                print(line)
+                        
+
+       
+
+
+        
+
+        # # For now, we've just hardcoded a program:
+
+        # program = [
+        #     # From print8.ls8
+        #     0b10000010, # LDI R0,8
+        #     0b00000000,
+        #     0b00001000,
+        #     0b01000111, # PRN R0
+        #     0b00000000,
+        #     0b00000001, # HLT
+        # ]
+
+        # for instruction in program:
+        #     self.ram[address] = instruction
+        #     address += 1
+
+        
+                
+
 
     def ram_read(self, address):
         return self.ram[address]
@@ -50,6 +71,9 @@ class CPU:
         #elif op == "SUB": etc
         else:
             raise Exception("Unsupported ALU operation")
+
+        # if op == "MUL":
+        #     self.reg[reg_a] *= self.reg[reg_b]
 
     def trace(self):
         """
@@ -77,6 +101,7 @@ class CPU:
         HLT = 0b00000001 
         LDI = 0b10000010
         PRN = 0b01000111
+        MUL = 0b10100010
 
 
         
@@ -84,6 +109,7 @@ class CPU:
         
         while running:
             ir = self.ram[self.pc]
+            
             if ir == HLT:
                 running = False
                 self.pc += 1
@@ -99,6 +125,14 @@ class CPU:
                 reg_num = self.ram[self.pc +1]
                 print(self.reg[reg_num])
                 self.pc += 2
+
+            elif ir == MUL:
+                reg_num = self.ram[self.pc + 1]
+                value = self.ram[self.pc + 2]
+                self.reg[reg_num] *= self.reg[value]
+                self.pc += 3
+               
+
 
 
 
