@@ -67,8 +67,7 @@ but you'll have to implement those three above instructions first!
 
 ## Step 1: Add the constructor to `cpu.py`
 
-Add list properties to the `CPU` class to hold 256 bytes of memory and 8
-general-purpose registers.
+Add list properties to the `CPU` class to hold 256 bytes of memory and 8 general-purpose registers.
 
 > Hint: you can make a list of a certain number of zeros with this syntax:
 >
@@ -86,8 +85,7 @@ value of the stack pointer.
 In `CPU`, add method `ram_read()` and `ram_write()` that access the RAM inside
 the `CPU` object.
 
-`ram_read()` should accept the address to read and return the value stored
-there.
+`ram_read()` should accept the address to read and return the value stored there.
 
 `ram_write()` should accept a value to write, and the address to write it to.
 
@@ -105,8 +103,7 @@ value of the stack pointer.
 
 ## Step 3: Implement the core of `CPU`'s `run()` method
 
-This is the workhorse function of the entire processor. It's the most difficult
-part to write.
+This is the workhorse function of the entire processor. It's the most difficult part to write.
 
 It needs to read the memory address that's stored in register `PC`, and store
 that result in `IR`, the _Instruction Register_. This can just be a local
